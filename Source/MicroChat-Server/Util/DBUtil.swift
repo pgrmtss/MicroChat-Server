@@ -24,7 +24,7 @@ let host = "0.0.0.0"
 
 
 
-open class DataBaseManager {
+open class DBUtil {
     
     fileprivate var mysql: MySQL
     internal init() {
@@ -73,17 +73,15 @@ open class DataBaseManager {
         
     }
     
-    /// 创建表 (查询是否有此表，若否，则创建)
-    func createTable(tableName: String) -> (success: Bool, mysqlResult: MySQL.Results?, errorMsg: String){
-        let insert = "SELECT * FROM \(tableName)"
-        let statement = mysqlStatement(insert)
-        if !statement.success {
-            let SQL = "CREATE TABLE \(tableName) (id INT(10) PRIMARY KEY AUTO_INCREMENT, path VARCHAR(255), companyName VARCHAR(255),phoneNumber VARCHAR(255))"
-            return mysqlStatement(SQL)
-        }
-        return mysqlStatement(insert)
+    /// 执行sql
+    ///
+    /// - Parameters:
+    ///   - sql: SQL语句
+    func quaryDatabaseSQL(sql:String) -> (success: Bool, mysqlResult: MySQL.Results?, errorMsg: String) {
+        return mysqlStatement(sql)
     }
-    //    CREATE TABLE samples (id INT PRIMARY KEY AUTO_INCREMENT, created_at DATETIME, location POINT, reading JSON)
+
+
     /// 增
     ///
     /// - Parameters:
@@ -113,23 +111,10 @@ open class DataBaseManager {
     /// - Parameters:
     ///   - tableName: 表
     ///   - keyValue: 键值对( 键='值', 键='值', 键='值' )
-    ///   - whereKey: 查找key
-    ///   - whereValue: 查找value
-    func updateDatabaseSQL(tableName: String, keyValue: String, whereKey: String, whereValue: String) -> (success: Bool, mysqlResult: MySQL.Results?, errorMsg: String) {
+    ///   - condition: 查询条件， 比如：userId=123
+    func updateDatabaseSQL(tableName: String, keyValue: String, condition: String) -> (success: Bool, mysqlResult: MySQL.Results?, errorMsg: String) {
         
-        let SQL = "UPDATE \(tableName) SET \(keyValue) WHERE \(whereKey) = '\(whereValue)'"
-        return mysqlStatement(SQL)
-        
-    }
-    
-    /// 查所有
-    ///
-    /// - Parameters:
-    ///   - tableName: 表
-    ///   - key: 键
-    func selectAllDatabaseSQL(tableName: String) -> (success: Bool, mysqlResult: MySQL.Results?, errorMsg: String) {
-        
-        let SQL = "SELECT * FROM \(tableName)"
+        let SQL = "UPDATE \(tableName) SET \(keyValue) WHERE \(condition)"
         return mysqlStatement(SQL)
         
     }
@@ -138,26 +123,32 @@ open class DataBaseManager {
     ///
     /// - Parameters:
     ///   - tableName: 表
-    ///   - keyValue: 键值对
-    func selectAllDataBaseSQLwhere(tableName: String, keyValue: String) -> (success: Bool, mysqlResult: MySQL.Results?, errorMsg: String) {
+    ///   - keys: 需要查询的键
+    ///   - condition: 查询条件，比如：userId=123
+    func selectDataBaseSQLwhere(tableName: String, keys: String, condition: String) -> (success: Bool, keyValues:[[String:String]], mysqlResult: MySQL.Results?, errorMsg: String) {
         
-        let SQL = "SELECT * FROM \(tableName) WHERE \(keyValue)"
-        return mysqlStatement(SQL)
-        
+        let SQL = "SELECT \(keys) FROM \(tableName) WHERE \(condition)"
+        let sqlResult = mysqlStatement(SQL)
+        var keyValues = [[String:String]]()
+        sqlResult.mysqlResult?.forEachRow(callback: { (element) in
+            let dic = self.mapToDictionary(withKeys: keys, values: element)
+            keyValues.append(dic)
+        })
+        return (sqlResult.success, keyValues, sqlResult.mysqlResult, sqlResult.errorMsg)
     }
     
-    // 获取数据库某个表中的所有数据
-    func mysqlGetUserDataResult(tableName: String) -> [Dictionary<String, String>]? {
-        
-        let result = selectAllDatabaseSQL(tableName: tableName)
-        var resultArray = [Dictionary<String, String>]()
+    // 将查询到的数据和查询字段映射为字典
+    func mapToDictionary(withKeys keys:String, values:[String?]) -> [String:String] {
+        print("keys:\(keys)")
+        print("values:\(values)")
+        let keysArr = keys.components(separatedBy: ",")
         var dic = [String:String]()
-        result.mysqlResult?.forEachRow(callback: { (row) in
-            dic["uuid"] = row[1]
-            resultArray.append(dic)
-        })
-        
-        return resultArray
-        
+        if keys.count != values.count {
+            return dic
+        }
+        for item in keysArr.enumerated() {
+            dic[item.element] = values[item.offset] ?? ""
+        }
+        return dic
     }
 }

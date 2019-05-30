@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		37930EFC229FC82900FD5842 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37930EFB229FC82900FD5842 /* LoginController.swift */; };
+		37930EFF229FDA8200FD5842 /* CommonJsonStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37930EFE229FDA8200FD5842 /* CommonJsonStruct.swift */; };
 		OBJ_416 /* a_.c in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_142 /* a_.c */; };
 		OBJ_417 /* aes_.c in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_143 /* aes_.c */; };
 		OBJ_418 /* ameth_lib.c in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_144 /* ameth_lib.c */; };
@@ -619,6 +620,7 @@
 
 /* Begin PBXFileReference section */
 		37930EFB229FC82900FD5842 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
+		37930EFE229FDA8200FD5842 /* CommonJsonStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonJsonStruct.swift; sourceTree = "<group>"; };
 		"COpenSSL::COpenSSL::Product" /* COpenSSL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = COpenSSL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"MicroChat-Server::MicroChat-Server::Product" /* MicroChat-Server */ = {isa = PBXFileReference; lastKnownFileType = text; path = "MicroChat-Server"; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_100 /* czlib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = czlib.h; sourceTree = "<group>"; };
@@ -1126,6 +1128,14 @@
 				37930EFB229FC82900FD5842 /* LoginController.swift */,
 			);
 			path = Login;
+			sourceTree = "<group>";
+		};
+		37930EFD229FDA7000FD5842 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				37930EFE229FDA8200FD5842 /* CommonJsonStruct.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 		OBJ_10 /* Util */ = {
@@ -1736,10 +1746,11 @@
 		OBJ_8 /* MicroChat-Server */ = {
 			isa = PBXGroup;
 			children = (
+				37930EFD229FDA7000FD5842 /* Common */,
 				37930EF9229FC80800FD5842 /* Class */,
-				OBJ_9 /* RouteManager.swift */,
 				OBJ_10 /* Util */,
 				OBJ_13 /* main.swift */,
+				OBJ_9 /* RouteManager.swift */,
 			);
 			name = "MicroChat-Server";
 			path = "Source/MicroChat-Server";
@@ -2477,6 +2488,7 @@
 				OBJ_661 /* RouteManager.swift in Sources */,
 				OBJ_662 /* DBUtil.swift in Sources */,
 				OBJ_663 /* Util.swift in Sources */,
+				37930EFF229FDA8200FD5842 /* CommonJsonStruct.swift in Sources */,
 				OBJ_664 /* main.swift in Sources */,
 				37930EFC229FC82900FD5842 /* LoginController.swift in Sources */,
 			);
