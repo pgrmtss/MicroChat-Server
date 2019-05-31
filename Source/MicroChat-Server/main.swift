@@ -1,6 +1,8 @@
 import PerfectLib
 import PerfectHTTP
 import PerfectHTTPServer
+import StORM
+import MySQLStORM
 
 let root = "./webroot"
 
@@ -8,6 +10,13 @@ let root = "./webroot"
 let server = HTTPServer()
 server.serverPort = 8181
 server.documentRoot = root
+
+// 配置数据库连接参数
+MySQLConnector.host        = "localhost"
+MySQLConnector.username    = "root"
+MySQLConnector.password    = "123456"
+MySQLConnector.database    = "MicroChat"
+MySQLConnector.port        = 3306
 
 // 配置路由
 let basic = RouteManager()

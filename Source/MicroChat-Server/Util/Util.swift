@@ -8,5 +8,8 @@
 import Foundation
 
 class Util: NSObject {
-    
+    class func createToken() -> String {
+        let str = "\(NSDate.init().timeIntervalSince1970)"
+        return str.md5Value
+    }
 }
